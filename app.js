@@ -82,8 +82,27 @@ app.get('/refreshtoken', function (req, res) {
   });
 });
 
+app.get('/blog/info', function (req, res) {
+  var api_url = 'https://www.tistory.com/apis/blog/info?access_token='+token+'&output=json';
+  var options = {
+    url: api_url,
+    headers: {'Authorization': header}
+  };
+  request.get(options, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
+      res.end(body);
+    } else {
+      console.log('error');
+      if(response != null) {
+        res.status(response.statusCode).end();
+        console.log('error = ' + response.statusCode);
+      }
+    }
+  });
+});
 app.get('/member', function (req, res) {
-  var api_url = 'https://openapi.tistory.com/v1/nid/me';
+  var api_url = 'https://www.tistory.com/apis/nid/me';
   var options = {
     url: api_url,
     headers: {'Authorization': header}
@@ -108,7 +127,7 @@ app.get('/member', function (req, res) {
 // var subject = encodeURI("티스토리 티스토리api Test node js");
 // var content = encodeURI("티스토리 티스토리api로 글을 티스토리에 글을 올려봅니다.");
 app.post('/cafe/post', function (req, res) {
-  var api_url = 'https://openapi.tistory.com/v1/cafe/' + req.body.clubid + '/menu/' + req.body.menuid + '/articles';
+  var api_url = 'https://www.tistory.com/apis/cafe/' + req.body.clubid + '/menu/' + req.body.menuid + '/articles';
   var options = {
     url: api_url,
     form: {'subject':req.body.subject, 'content':req.body.content},
@@ -135,7 +154,7 @@ app.post('/cafe/post', function (req, res) {
 // var content = encodeURI("node js multi-part 티스토리 티스토리api로 글을 티스토리에 글을 올려봅니다.");
 var fs = require('fs');
 app.post('/cafe/post/multipart', function (req, res) {
-  var api_url = 'https://openapi.tistory.com/v1/cafe/' + req.body.clubid + '/menu/' + req.body.menuid + '/articles';
+  var api_url = 'https://www.tistory.com/apis/cafe/' + req.body.clubid + '/menu/' + req.body.menuid + '/articles';
   var _formData = {};
   _formData.subject = req.body.subject;
   _formData.content = req.body.content;
