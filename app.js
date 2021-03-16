@@ -40,11 +40,11 @@ app.get('/callback', function (req, res) {
       res.writeHead(200, {'Content-Type': 'text/json;charset=utf-8'});
       console.log(body);
       console.log(typeof body);
-      if(JSON.parse(body)){
-        token = JSON.parse(body).access_token;
-        refresh_token = JSON.parse(body).refresh_token;
-        header = "Bearer " + token;
-
+      if(body){
+        token = body.replace(/access_token=/gi,'');
+        console.log(token);
+        // refresh_token = JSON.parse(body).refresh_token;
+        // header = "Bearer " + token;
       }
       res.end(body);
     } else {
